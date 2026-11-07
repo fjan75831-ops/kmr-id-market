@@ -236,6 +236,32 @@ function showWatchlist() {
 
 showWatchlist();
 </script>
+<script type="module">
+import { supabase } from './supabase.js';
 
+document.getElementById('loginBtn').onclick = async () => {
+  const username = prompt('Enter username:');
+  const password = prompt('Enter password:');
+
+  if (!username || !password) return;
+
+  const { data: email, error } = await supabase.rpc(
+    'get_username_login_email',
+    { p_username: username }
+  );
+
+  if (error || !email) {
+    alert('Username not found');
+    return;
+  }
+
+  const { error: loginError } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  alert(loginError ? loginError.message : 'Login successful!');
+};
+</script>
 </body>
 </html>
