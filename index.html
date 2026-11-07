@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>KMR ID MARKET</title>
 
 <style>
@@ -19,36 +20,36 @@ body {
 }
 
 header {
-  background: #111;
+  background: #151515;
   padding: 20px;
+  border-bottom: 2px solid red;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid red;
 }
 
 .logo {
   color: #ff2525;
-  font-size: 23px;
+  font-size: 21px;
   font-weight: bold;
 }
 
 nav a {
   color: white;
   text-decoration: none;
-  margin-left: 12px;
+  margin: 8px;
   font-size: 13px;
 }
 
 .hero {
   text-align: center;
   padding: 75px 15px;
-  background: linear-gradient(135deg,#300000,#090909);
+  background: linear-gradient(135deg,#500000,#080808);
 }
 
 .hero h1 {
-  font-size: 38px;
   color: #ff3030;
+  font-size: 36px;
   margin-bottom: 15px;
 }
 
@@ -57,13 +58,13 @@ nav a {
   margin-bottom: 25px;
 }
 
-.btn {
-  display: inline-block;
+button {
   background: #e60000;
   color: white;
-  padding: 13px 25px;
+  border: none;
+  padding: 12px 20px;
   border-radius: 7px;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 section {
@@ -83,7 +84,7 @@ h2 {
 
 .card {
   background: #171717;
-  border: 1px solid #3b2020;
+  border: 1px solid #442020;
   border-radius: 12px;
   padding: 20px;
 }
@@ -97,12 +98,18 @@ h2 {
   line-height: 1.8;
 }
 
+.save {
+  margin-top: 15px;
+  background: #292929;
+  border: 1px solid red;
+}
+
 footer {
-  background: #111;
+  background: #151515;
   text-align: center;
   padding: 25px;
-  border-top: 2px solid red;
   color: #aaa;
+  border-top: 2px solid red;
 }
 </style>
 </head>
@@ -113,8 +120,8 @@ footer {
   <div class="logo">👑 KMR ID MARKET</div>
   <nav>
     <a href="#home">Home</a>
-    <a href="#showcase">Showcase</a>
-    <a href="#about">About</a>
+    <a href="#profiles">Profiles</a>
+    <a href="#watchlist">Watchlist</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
@@ -122,48 +129,109 @@ footer {
 <div class="hero" id="home">
   <h1>KMR ID MARKET</h1>
   <p>Explore Gaming Profiles & Rare Collections</p>
-  <a href="#showcase" class="btn">Explore Showcase</a>
+  <button onclick="location.href='#profiles'">
+    Explore Profiles
+  </button>
 </div>
 
-<section id="showcase">
-  <h2>🔥 Featured Collections</h2>
+<section id="profiles">
+  <h2>🔥 Gaming Profiles</h2>
 
   <div class="cards">
 
     <div class="card">
-      <h3>👑 Legendary Collection</h3>
-      <p>Rare outfits and legendary skins.</p>
+      <h3>👑 Legendary Profile</h3>
+      <p>Level: 75</p>
+      <p>Rare Skins: 25</p>
+      <p>Collection: Legendary</p>
+      <button class="save" onclick="saveProfile('Legendary Profile')">
+        ❤️ Save to Watchlist
+      </button>
     </div>
 
     <div class="card">
-      <h3>💎 Premium Collection</h3>
-      <p>Explore premium gaming cosmetics.</p>
+      <h3>💎 Premium Profile</h3>
+      <p>Level: 65</p>
+      <p>Rare Skins: 18</p>
+      <p>Collection: Premium</p>
+      <button class="save" onclick="saveProfile('Premium Profile')">
+        ❤️ Save to Watchlist
+      </button>
     </div>
 
     <div class="card">
-      <h3>⚡ Rare Skins</h3>
-      <p>Discover exclusive-looking skin collections.</p>
+      <h3>⚡ Rare Collection</h3>
+      <p>Level: 80</p>
+      <p>Rare Skins: 30</p>
+      <p>Collection: Rare</p>
+      <button class="save" onclick="saveProfile('Rare Collection')">
+        ❤️ Save to Watchlist
+      </button>
     </div>
 
   </div>
 </section>
 
-<section id="about">
-  <h2>About Us</h2>
-  <p>KMR ID MARKET is a gaming showcase website
-  created for displaying gaming collections
-  and sharing gaming information.</p>
+<section id="watchlist">
+  <h2>❤️ My Watchlist</h2>
+  <div id="savedProfiles">
+    <p>No saved profiles yet.</p>
+  </div>
 </section>
 
 <section id="contact">
   <h2>📞 Contact Us</h2>
-  <p>For website feedback and general enquiries,
-  contact the KMR ID MARKET team.</p>
+  <p>Contact KMR ID MARKET for website enquiries.</p>
 </section>
 
 <footer>
-  © 2026 KMR ID MARKET | All Rights Reserved
+  © 2026 KMR ID MARKET
+  <br><br>
+  Independent gaming showcase. Not affiliated with Garena.
 </footer>
+
+<script>
+function getSaved() {
+  return JSON.parse(localStorage.getItem("kmrWatchlist") || "[]");
+}
+
+function saveProfile(name) {
+  let saved = getSaved();
+
+  if (!saved.includes(name)) {
+    saved.push(name);
+    localStorage.setItem("kmrWatchlist", JSON.stringify(saved));
+  }
+
+  showWatchlist();
+  alert("Saved to Watchlist!");
+}
+
+function removeProfile(name) {
+  let saved = getSaved().filter(item => item !== name);
+  localStorage.setItem("kmrWatchlist", JSON.stringify(saved));
+  showWatchlist();
+}
+
+function showWatchlist() {
+  let saved = getSaved();
+  let box = document.getElementById("savedProfiles");
+
+  if (saved.length === 0) {
+    box.innerHTML = "<p>No saved profiles yet.</p>";
+    return;
+  }
+
+  box.innerHTML = saved.map(name =>
+    `<div class="card">
+      <h3>${name}</h3>
+      <button onclick="removeProfile('${name}')">Remove</button>
+    </div>`
+  ).join("");
+}
+
+showWatchlist();
+</script>
 
 </body>
 </html>
